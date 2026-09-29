@@ -1,0 +1,83 @@
+import type { JobApplication } from '@/types/application'
+import { emptyApplication } from './schema'
+import { today } from '@/lib/utils'
+export function demoApplications(): JobApplication[] {
+  const rows = [
+    {
+      company: 'Linear',
+      position: 'Senior Frontend Engineer',
+      status: 'interview' as const,
+      technologies: ['React', 'TypeScript', 'GraphQL'],
+      salaryMin: 150000,
+      salaryMax: 190000,
+      location: 'San Francisco, CA',
+      remote: true,
+      missingTechnologies: ['GraphQL'],
+    },
+    {
+      company: 'Vercel',
+      position: 'Design Engineer',
+      status: 'applied' as const,
+      technologies: ['React', 'Next.js', 'Tailwind CSS'],
+      salaryMin: 140000,
+      salaryMax: 180000,
+      location: 'United States',
+      remote: true,
+      missingTechnologies: [],
+    },
+    {
+      company: 'Notion',
+      position: 'Software Engineer, Product',
+      status: 'technical_test' as const,
+      technologies: ['TypeScript', 'React', 'PostgreSQL'],
+      salaryMin: 145000,
+      salaryMax: 200000,
+      location: 'New York, NY',
+      remote: false,
+      missingTechnologies: ['PostgreSQL'],
+    },
+    {
+      company: 'Spotify',
+      position: 'Frontend Engineer',
+      status: 'saved' as const,
+      technologies: ['JavaScript', 'React', 'Node.js'],
+      salaryMin: 120000,
+      salaryMax: 165000,
+      location: 'London, UK',
+      remote: true,
+      missingTechnologies: ['Node.js'],
+    },
+    {
+      company: 'Figma',
+      position: 'Software Engineer, Web',
+      status: 'contacted' as const,
+      technologies: ['TypeScript', 'React', 'WebGL'],
+      salaryMin: 150000,
+      salaryMax: 210000,
+      location: 'San Francisco, CA',
+      remote: true,
+      missingTechnologies: ['WebGL'],
+    },
+    {
+      company: 'Stripe',
+      position: 'Frontend Engineer, Dashboard',
+      status: 'offer' as const,
+      technologies: ['React', 'TypeScript', 'Ruby'],
+      salaryMin: 160000,
+      salaryMax: 200000,
+      location: 'Seattle, WA',
+      remote: true,
+      missingTechnologies: ['Ruby'],
+    },
+  ]
+  return rows.map((row) => ({
+    ...emptyApplication(),
+    ...row,
+    id: crypto.randomUUID(),
+    notes: 'Sample opportunity for exploring Job Tracker. This is not a live job listing.',
+    source: 'Demo data',
+    appliedAt: today(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }))
+}
