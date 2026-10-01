@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 interface Props {
   id: string
   value: string[]
@@ -7,6 +8,7 @@ interface Props {
   placeholder: string
 }
 export function TagInput({ id, value, onChange, placeholder }: Props) {
+  const { t } = useTranslation()
   const [draft, setDraft] = useState('')
   const add = () => {
     const next = [...value]
@@ -25,7 +27,7 @@ export function TagInput({ id, value, onChange, placeholder }: Props) {
           {tag}
           <button
             type="button"
-            aria-label={`Remove ${tag}`}
+            aria-label={t('common.remove', { item: tag })}
             onClick={() => onChange(value.filter((t) => t !== tag))}
           >
             <X size={12} />

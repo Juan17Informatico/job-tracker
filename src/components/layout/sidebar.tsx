@@ -13,6 +13,7 @@ import {
   Sun,
 } from 'lucide-react'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store/use-app-store'
 import { cn } from '@/lib/utils'
 export type Page = 'overview' | 'opportunities' | 'technologies' | 'settings'
@@ -23,6 +24,7 @@ interface Props {
   onClose: () => void
 }
 export function Sidebar({ page, onNavigate, open, onClose }: Props) {
+  const { t } = useTranslation()
   const count = useAppStore((s) => s.applications.length)
   const theme = useAppStore((s) => s.settings.theme)
   const navigate = (next: Page) => {
@@ -33,7 +35,7 @@ export function Sidebar({ page, onNavigate, open, onClose }: Props) {
     <>
       <button
         className={cn('sidebar-backdrop', open && 'is-open')}
-        aria-label="Close navigation"
+        aria-label={t('closeNavigation')}
         onClick={onClose}
       />
       <aside className={cn('sidebar', open && 'is-open')}>
@@ -56,53 +58,48 @@ export function Sidebar({ page, onNavigate, open, onClose }: Props) {
         <div className="workspace-label">
           <span className="workspace-avatar">Y</span>
           <div>
-            Your workspace<small>Personal space</small>
+            {t('nav.workspace')}
+            <small>{t('nav.personalSpace')}</small>
           </div>
           <span className="personal-dot" />
         </div>
-        <div className="nav-caption">WORKSPACE</div>
-        <nav aria-label="Main navigation">
+        <div className="nav-caption">{t('nav.workspaceLabel')}</div>
+        <nav aria-label={t('nav.workspaceLabel')}>
           <button
             className={cn('nav-item', page === 'overview' && 'active')}
             onClick={() => navigate('overview')}
           >
             <LayoutDashboard size={18} />
-            Overview
+            {t('nav.overview')}
           </button>
           <button
             className={cn('nav-item', page === 'opportunities' && 'active')}
             onClick={() => navigate('opportunities')}
           >
             <BriefcaseBusiness size={18} />
-            Opportunities<span className="nav-count">{count}</span>
+            {t('nav.opportunities')}
+            <span className="nav-count">{count}</span>
           </button>
           <button
             className={cn('nav-item', page === 'technologies' && 'active')}
             onClick={() => navigate('technologies')}
           >
             <Code2 size={19} />
-            Technologies
+            {t('nav.technologies')}
           </button>
           <div className="nav-item nav-disabled" aria-disabled="true">
             <ChartNoAxesCombined size={18} />
-            Analytics<span className="soon-label">SOON</span>
+            {t('nav.analytics')}
+            <span className="soon-label">{t('nav.soon')}</span>
           </div>
         </nav>
         <div className="sidebar-bottom">
           <div className="sidebar-note">
             <Sprout size={25} strokeWidth={1.5} />
-            <h3>
-              Small steps.
-              <br />
-              Big possibilities.
-            </h3>
-            <p>
-              Your next chapter starts
-              <br />
-              with one opportunity.
-            </p>
+            <h3>{t('nav.sidebarTitle')}</h3>
+            <p>{t('nav.sidebarText')}</p>
             <span>
-              Keep moving forward <ArrowUpRight size={14} />
+              {t('nav.keepMoving')} <ArrowUpRight size={14} />
             </span>
           </div>
           <button
@@ -110,11 +107,11 @@ export function Sidebar({ page, onNavigate, open, onClose }: Props) {
             onClick={() => navigate('settings')}
           >
             <Settings2 size={18} />
-            Settings
+            {t('nav.settings')}
             <ChevronRight size={15} className="ml-auto" />
           </button>
           <div className="theme-row">
-            <span>Appearance</span>
+            <span>{t('nav.appearance')}</span>
             <div className="theme-picker">
               {(
                 [
@@ -125,9 +122,9 @@ export function Sidebar({ page, onNavigate, open, onClose }: Props) {
               ).map(({ value, Icon }) => (
                 <button
                   key={value}
-                  aria-label={`${value} theme`}
+                  aria-label={t(`settings.${value}Theme`)}
                   aria-pressed={theme === value}
-                  title={`${value[0].toUpperCase()}${value.slice(1)} theme`}
+                  title={t(`settings.${value}Theme`)}
                   className={cn(theme === value && 'selected')}
                   onClick={() => {
                     try {
@@ -143,7 +140,7 @@ export function Sidebar({ page, onNavigate, open, onClose }: Props) {
             </div>
           </div>
           <div className="sidebar-foot">
-            <Compass size={12} /> A little direction for what’s next.
+            <Compass size={12} /> {t('nav.direction')}
           </div>
         </div>
       </aside>

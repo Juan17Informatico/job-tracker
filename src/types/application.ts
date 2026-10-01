@@ -8,14 +8,18 @@ export const statuses = [
   'offer',
 ] as const
 export type ApplicationStatus = (typeof statuses)[number]
-export const statusLabels: Record<ApplicationStatus, string> = {
-  saved: 'Saved',
-  applied: 'Applied',
-  contacted: 'Contacted',
-  interview: 'Interview',
-  technical_test: 'Technical test',
-  rejected: 'Rejected',
-  offer: 'Offer',
+export type InterviewType = 'recruiter' | 'technical' | 'behavioral' | 'final' | 'other'
+export interface ApplicationStatusEvent {
+  id: string
+  status: ApplicationStatus
+  occurredAt: string
+}
+export interface InterviewEvent {
+  id: string
+  type: InterviewType
+  scheduledAt: string
+  completedAt?: string
+  notes?: string
 }
 export interface JobApplication {
   id: string
@@ -36,14 +40,27 @@ export interface JobApplication {
   appliedAt: string
   createdAt: string
   updatedAt: string
+  statusHistory: ApplicationStatusEvent[]
+  interviews: InterviewEvent[]
 }
-export type ApplicationInput = Omit<JobApplication, 'id' | 'createdAt' | 'updatedAt'>
+export type ApplicationInput = Omit<
+  JobApplication,
+  'id' | 'createdAt' | 'updatedAt' | 'statusHistory' | 'interviews'
+>
 export interface Settings {
   theme: 'light' | 'dark' | 'system'
+  language: 'en' | 'es'
 }
 export interface BackupV1 {
   version: 1
   exportedAt: string
+  applications: Array<Omit<JobApplication, 'statusHistory' | 'interviews'>>
+  settings: Pick<Settings, 'theme'>
+}
+export interface BackupV2 {
+  version: 2
+  exportedAt: string
   applications: JobApplication[]
   settings: Settings
 }
+export type Backup = BackupV2

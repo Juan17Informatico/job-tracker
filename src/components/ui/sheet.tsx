@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 export const Sheet = Dialog.Root
 export const SheetTitle = Dialog.Title
@@ -10,6 +11,7 @@ export function SheetContent({
   className,
   ...props
 }: ComponentProps<typeof Dialog.Content>) {
+  const { t } = useTranslation()
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="dialog-overlay" />
@@ -17,7 +19,7 @@ export function SheetContent({
         {children}
         <Dialog.Close
           className="sheet-close button button-ghost button-icon"
-          aria-label="Close form"
+          aria-label={t('form.closeLabel')}
         >
           <X size={19} />
         </Dialog.Close>

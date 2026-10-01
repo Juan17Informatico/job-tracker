@@ -79,5 +79,20 @@ export function demoApplications(): JobApplication[] {
     appliedAt: today(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    statusHistory: [
+      { id: crypto.randomUUID(), status: row.status, occurredAt: `${today()}T12:00:00.000Z` },
+    ],
+    interviews:
+      row.status === 'interview' || row.status === 'technical_test'
+        ? [
+            {
+              id: crypto.randomUUID(),
+              type:
+                row.status === 'technical_test' ? ('technical' as const) : ('recruiter' as const),
+              scheduledAt: `${today()}T15:00:00.000Z`,
+              notes: 'Sample interview event.',
+            },
+          ]
+        : [],
   }))
 }

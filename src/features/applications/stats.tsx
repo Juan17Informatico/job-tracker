@@ -1,40 +1,42 @@
 import { ArrowUpRight, BriefcaseBusiness, MessagesSquare, MousePointer2, Send } from 'lucide-react'
 import { applicationStats } from './selectors'
 import type { JobApplication } from '@/types/application'
+import { useTranslation } from 'react-i18next'
 export function Stats({ applications }: { applications: JobApplication[] }) {
+  const { t } = useTranslation()
   const stats = applicationStats(applications)
   const items = [
     {
-      label: 'Applications',
+      label: t('dashboard.stats.applications'),
       value: stats.total,
-      caption: 'Every possibility, in one place',
+      caption: t('dashboard.stats.every'),
       Icon: BriefcaseBusiness,
       className: 'stat-neutral',
     },
     {
-      label: 'Active applications',
+      label: t('dashboard.stats.active'),
       value: stats.active,
-      caption: 'Conversations in motion',
+      caption: t('dashboard.stats.motion'),
       Icon: Send,
       className: 'stat-orange',
     },
     {
-      label: 'Interviews',
+      label: t('dashboard.stats.interviews'),
       value: stats.interviews,
-      caption: 'A chance to make an impression',
+      caption: t('dashboard.stats.impression'),
       Icon: MessagesSquare,
       className: 'stat-purple',
     },
     {
-      label: 'Interview rate',
+      label: t('dashboard.stats.rate'),
       value: `${stats.rate}%`,
-      caption: 'Interview, test or offer / submitted',
+      caption: t('dashboard.stats.rateHelp'),
       Icon: MousePointer2,
       className: 'stat-green',
     },
   ]
   return (
-    <section className="stats-grid" aria-label="Application statistics">
+    <section className="stats-grid" aria-label={t('dashboard.stats.applications')}>
       {items.map(({ label, value, caption, Icon, className }) => (
         <div className={`stat-card ${className}`} key={label}>
           <div className="stat-top">

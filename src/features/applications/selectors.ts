@@ -1,13 +1,43 @@
 import type { ApplicationStatus, JobApplication } from '@/types/application'
+export interface ApplicationFilters {
+  query: string
+  status: ApplicationStatus | 'all'
+  remote: 'all' | 'remote' | 'onsite'
+  technology: string
+  missingTechnology: string
+  appliedAfter: string
+  appliedBefore: string
+}
 export function filterApplications(
   applications: JobApplication[],
-  query: string,
-  status: ApplicationStatus | 'all',
+  queryOrFilters: string | ApplicationFilters,
+  status: ApplicationStatus | 'all' = 'all',
 ) {
-  const needle = query.trim().toLowerCase()
+  const filters: ApplicationFilters =
+    typeof queryOrFilters === 'string'
+      ? {
+          query: queryOrFilters,
+          status,
+          remote: 'all',
+          technology: '',
+          missingTechnology: '',
+          appliedAfter: '',
+          appliedBefore: '',
+        }
+      : queryOrFilters
+  const needle = filters.query.trim().toLowerCase()
   return applications.filter(
     (a) =>
-      (status === 'all' || a.status === status) &&
+      (filters.status === 'all' || a.status === filters.status) &&
+      (filters.remote === 'all' || (filters.remote === 'remote' ? a.remote : !a.remote)) &&
+      (!filters.technology ||
+        a.technologies.some((tag) => tag.toLowerCase() === filters.technology.toLowerCase())) &&
+      (!filters.missingTechnology ||
+        a.missingTechnologies.some(
+          (tag) => tag.toLowerCase() === filters.missingTechnology.toLowerCase(),
+        )) &&
+      (!filters.appliedAfter || !a.appliedAt || a.appliedAt >= filters.appliedAfter) &&
+      (!filters.appliedBefore || !a.appliedAt || a.appliedAt <= filters.appliedBefore) &&
       [a.company, a.position, a.location, ...a.technologies, ...a.missingTechnologies]
         .join(' ')
         .toLowerCase()

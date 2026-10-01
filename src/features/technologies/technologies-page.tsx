@@ -1,6 +1,7 @@
 import { Code2, Plus, Sprout } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store/use-app-store'
+import { useTranslation } from 'react-i18next'
 function countTags(groups: string[][]) {
   const counts = new Map<string, { name: string; count: number }>()
   for (const group of groups)
@@ -14,17 +15,18 @@ function countTags(groups: string[][]) {
   return [...counts.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
 }
 export function TechnologiesPage({ onAdd }: { onAdd: () => void }) {
+  const { t } = useTranslation()
   const applications = useAppStore((s) => s.applications)
   const stacks = [
     {
-      title: 'On the radar',
-      description: 'Technologies mentioned in your opportunities.',
+      title: t('technologies.radar'),
+      description: t('technologies.radarDescription'),
       Icon: Code2,
       tags: countTags(applications.map((a) => a.technologies)),
     },
     {
-      title: 'Room to grow',
-      description: 'Skills you’ve marked as something to learn.',
+      title: t('technologies.grow'),
+      description: t('technologies.growDescription'),
       Icon: Sprout,
       tags: countTags(applications.map((a) => a.missingTechnologies)),
     },
@@ -35,16 +37,17 @@ export function TechnologiesPage({ onAdd }: { onAdd: () => void }) {
         <div>
           <div className="eyebrow heading-eyebrow">
             <span />
-            STAY CURIOUS
+            {t('technologies.eyebrow')}
           </div>
           <h1>
-            Your next skill<span className="title-dot">.</span>
+            {t('technologies.title')}
+            <span className="title-dot">.</span>
           </h1>
-          <p>Let your opportunities point you toward what to learn.</p>
+          <p>{t('technologies.subtitle')}</p>
         </div>
         <Button onClick={onAdd}>
           <Plus size={17} />
-          Add opportunity
+          {t('technologies.add')}
         </Button>
       </div>
       <div className="technology-grid">
@@ -55,21 +58,18 @@ export function TechnologiesPage({ onAdd }: { onAdd: () => void }) {
             <p>{description}</p>
             {tags.length ? (
               <div className="technology-rows">
-                {tags.map((t) => (
-                  <div className="technology-row" key={t.name}>
-                    <span className="tech-tag">{t.name}</span>
+                {tags.map((tag) => (
+                  <div className="technology-row" key={tag.name}>
+                    <span className="tech-tag">{tag.name}</span>
                     <span>
-                      {t.count} {t.count === 1 ? 'opportunity' : 'opportunities'}
+                      {tag.count}{' '}
+                      {tag.count === 1 ? t('common.opportunity') : t('common.opportunities')}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="technology-empty">
-                Add technology tags to an opportunity
-                <br />
-                and they’ll find a home here.
-              </div>
+              <div className="technology-empty">{t('technologies.empty')}</div>
             )}
           </section>
         ))}

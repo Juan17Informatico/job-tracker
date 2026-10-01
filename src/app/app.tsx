@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ChevronRight, CircleHelp, LockKeyhole, Menu, X } from 'lucide-react'
 import { Toaster } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import { Sidebar, type Page } from '@/components/layout/sidebar'
 import { Button } from '@/components/ui/button'
 import { Dashboard } from '@/features/applications/dashboard'
@@ -8,22 +9,25 @@ import { ApplicationSheet } from '@/features/applications/application-sheet'
 import { TechnologiesPage } from '@/features/technologies/technologies-page'
 import { SettingsPage } from '@/features/settings/settings-page'
 import { useTheme } from '@/hooks/use-theme'
+import { useLanguage } from '@/hooks/use-language'
 import { useAppStore } from '@/store/use-app-store'
 import type { JobApplication } from '@/types/application'
 
-const pageLabels = {
-  overview: 'Overview',
-  opportunities: 'Opportunities',
-  technologies: 'Technologies',
-  settings: 'Settings',
-}
 export default function App() {
+  const { t } = useTranslation()
   const [page, setPage] = useState<Page>('overview')
   const [menu, setMenu] = useState(false)
   const [sheet, setSheet] = useState<{ application: JobApplication | null } | null>(null)
   const [help, setHelp] = useState(false)
   const storageError = useAppStore((s) => s.storageError)
   const theme = useTheme()
+  useLanguage()
+  const pageLabels = {
+    overview: t('nav.overview'),
+    opportunities: t('nav.opportunities'),
+    technologies: t('nav.technologies'),
+    settings: t('nav.settings'),
+  }
   const add = () => setSheet({ application: null })
   useEffect(() => {
     if (!menu) return
@@ -44,30 +48,30 @@ export default function App() {
               variant="ghost"
               className="mobile-menu"
               onClick={() => setMenu(!menu)}
-              aria-label={menu ? 'Close navigation' : 'Open navigation'}
+              aria-label={menu ? t('closeNavigation') : t('openNavigation')}
             >
               {menu ? <X size={20} /> : <Menu size={20} />}
             </Button>
-            <span>Workspace</span>
+            <span>{t('nav.workspace')}</span>
             <ChevronRight size={13} />
             <strong>{pageLabels[page]}</strong>
           </div>
           <div className="topbar-right">
             <span className="local-indicator">
               <span />
-              All yours. All local.
+              {t('common.allLocal')}
             </span>
             <span className="topbar-divider" />
             <Button
               variant="ghost"
               size="icon"
-              aria-label="About your workspace"
+              aria-label={t('nav.workspace')}
               onClick={() => setHelp(!help)}
               aria-expanded={help}
             >
               <CircleHelp size={18} />
             </Button>
-            <span className="user-avatar" title="Your personal workspace">
+            <span className="user-avatar" title={t('yourWorkspace')}>
               Y
             </span>
           </div>
@@ -75,15 +79,11 @@ export default function App() {
         {help && (
           <div className="help-banner">
             <LockKeyhole size={19} />
-            <p>
-              This is your private job-search workspace. Add opportunities, track their status, and
-              collect skills to learn. Everything is stored in this browser; keep a JSON backup in
-              Settings.
-            </p>
+            <p>{t('help')}</p>
             <Button
               size="icon"
               variant="ghost"
-              aria-label="Close help"
+              aria-label={t('closeHelp')}
               onClick={() => setHelp(false)}
             >
               <X size={16} />
@@ -93,9 +93,9 @@ export default function App() {
         <main className="main-content">
           {storageError && (
             <div className="storage-warning" role="alert">
-              {storageError}
+              {t('storageError')}
               <Button variant="outline" size="sm" onClick={() => setPage('settings')}>
-                Open Settings
+                {t('storageOpen')}
               </Button>
             </div>
           )}
@@ -111,10 +111,10 @@ export default function App() {
           <footer className="page-footer">
             <span>
               <LockKeyhole size={12} />
-              Private by design. Stored on your device.
+              {t('footer')}
             </span>
             <span>
-              Made for your next move <span className="footer-star">✳</span>
+              {t('footerMade')} <span className="footer-star">✳</span>
             </span>
           </footer>
         </main>

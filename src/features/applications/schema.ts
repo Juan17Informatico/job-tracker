@@ -15,9 +15,9 @@ const url = z
     }
   }, 'Enter a complete http:// or https:// URL')
 const tags = z.array(z.string().trim().min(1).max(40)).max(30)
-const applicationFields = z.object({
-  company: z.string().trim().min(1, 'Company is required').max(100),
-  position: z.string().trim().min(1, 'Position is required').max(150),
+export const applicationFields = z.object({
+  company: z.string().trim().min(1, 'companyRequired').max(100),
+  position: z.string().trim().min(1, 'positionRequired').max(150),
   jobUrl: url,
   companyUrl: url,
   salaryMin: z.number().finite().nonnegative().nullable(),
@@ -26,7 +26,7 @@ const applicationFields = z.object({
     .string()
     .refine(
       (value) => ['USD', 'EUR', 'GBP', 'CAD', 'COP', 'AUD'].includes(value),
-      'Choose a supported currency',
+      'unsupportedCurrency',
     ),
   location: z.string().trim().max(120),
   remote: z.boolean(),
@@ -39,13 +39,31 @@ const applicationFields = z.object({
 })
 const validSalary = (data: ApplicationInput) =>
   data.salaryMin === null || data.salaryMax === null || data.salaryMax >= data.salaryMin
-const salaryError = { message: 'Maximum must be at least the minimum', path: ['salaryMax'] }
+const salaryError = { message: 'maxAtLeastMin', path: ['salaryMax'] }
 export const applicationSchema = applicationFields.refine(validSalary, salaryError)
 export const recordSchema = applicationFields
   .extend({
     id: z.string().uuid(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
+    statusHistory: z
+      .array(
+        z.object({
+          id: z.string().uuid(),
+          status: z.enum(statuses),
+          occurredAt: z.string().datetime(),
+        }),
+      )
+      .min(1),
+    interviews: z.array(
+      z.object({
+        id: z.string().uuid(),
+        type: z.enum(['recruiter', 'technical', 'behavioral', 'final', 'other']),
+        scheduledAt: z.string().datetime(),
+        completedAt: z.string().datetime().optional(),
+        notes: z.string().max(10000).optional(),
+      }),
+    ),
   })
   .refine(validSalary, salaryError)
 export function emptyApplication(): ApplicationInput {

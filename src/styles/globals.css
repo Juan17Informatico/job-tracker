@@ -1981,6 +1981,21 @@ h1 {
     display: none;
   }
 }
+@media (max-width: 760px) { .advanced-filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; } .advanced-filters .date-filter { min-width: 145px; } }
+.advanced-filters { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: -10px 0 20px; }
+.advanced-filters .filter-select { height: 34px; }
+.advanced-filters .filter-select select { max-width: 170px; font-size: 10px; }
+.date-filter { display: flex; align-items: center; gap: 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); min-height: 34px; padding: 0 8px; color: var(--muted-foreground); font-size: 9px; white-space: nowrap; }
+.date-filter input { border: 0; background: transparent; color: var(--foreground); font-size: 10px; outline: 0; }
+.filter-count { color: var(--muted-foreground); font-size: 10px; white-space: nowrap; }
+.detail-section { border-top: 1px solid var(--border); padding-bottom: 9px; }
+.detail-section .form-section-heading { margin-bottom: 13px; }
+.timeline { position: relative; margin: 0 4px 22px 9px; padding-left: 20px; border-left: 1px solid var(--border); }
+.timeline-item { display: flex; gap: 11px; align-items: flex-start; position: relative; padding: 0 0 16px; }
+.timeline-dot { position: absolute; left: -25px; top: 3px; width: 9px; height: 9px; border-radius: 50%; background: var(--muted-foreground); border: 2px solid var(--background); box-shadow: 0 0 0 1px var(--border); }
+.timeline-dot.status-interview, .timeline-dot.status-technical_test { background: var(--purple); }.timeline-dot.status-applied, .timeline-dot.status-contacted { background: var(--blue); }.timeline-dot.status-offer { background: var(--green); }.timeline-item strong { display: block; font-size: 11px; font-weight: 600; }.timeline-item time, .interview-item time { display: block; font-size: 9px; color: var(--muted-foreground); margin-top: 3px; }
+.muted-copy { color: var(--muted-foreground); font-size: 10px; padding: 0 0 15px; }
+.interview-list { display: grid; gap: 8px; margin-bottom: 13px; }.interview-item { display: flex; justify-content: space-between; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--card); }.interview-item strong { display: block; font-size: 11px; }.interview-item p { color: var(--muted-foreground); font-size: 10px; margin-top: 6px; line-height: 1.5; }.interview-item > div:last-child { display: flex; gap: 8px; align-items: flex-start; }.text-link { border: 0; background: transparent; padding: 0; color: var(--muted-foreground); font-size: 10px; }.text-link:hover { color: var(--primary); }.danger-link:hover { color: var(--destructive); }.interview-editor { padding: 13px; border-radius: 8px; background: var(--muted); margin-bottom: 15px; }.interview-actions { display: flex; justify-content: flex-end; gap: 8px; }.language-options { display: flex; gap: 9px; margin-top: 22px; }.language-options button { padding: 10px 17px; border: 1px solid var(--border); border-radius: 7px; background: var(--card); color: var(--muted-foreground); font-size: 11px; }.language-options button.selected { border-color: var(--primary); background: var(--accent); color: var(--accent-foreground); }
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -5,7 +5,11 @@ import App from '@/app/app'
 import { useAppStore } from '@/store/use-app-store'
 beforeEach(() => {
   localStorage.clear()
-  useAppStore.setState({ applications: [], settings: { theme: 'light' }, storageError: null })
+  useAppStore.setState({
+    applications: [],
+    settings: { theme: 'light', language: 'en' },
+    storageError: null,
+  })
 })
 describe('opportunity workflow', () => {
   it('validates, creates with tags, edits, filters, and confirms deletion', async () => {
